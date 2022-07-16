@@ -42,9 +42,7 @@ inline uint64_t rotl64(uint64_t x, int8_t r)
 }
 
 #define ROTL32(x, y) rotl32(x, y)
-#define ROTL64(x, y) rotl64(x, y)
 
-#define BIG_CONSTANT(x) (x##LLU)
 
 #endif // !defined(_MSC_VER)
 
@@ -74,7 +72,7 @@ static FORCE_INLINE uint32_t fmix32(uint32_t h)
 //-----------------------------------------------------------------------------
 static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *out)
 {
-  const uint8_t *data = (const uint8_t *)key;
+  const uint8_t *data = static_cast<const uint8_t *>(key);
   const int nblocks = len / 4;
 
   uint32_t h1 = seed;
@@ -85,7 +83,7 @@ static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *ou
   //----------
   // body
 
-  const uint32_t *blocks = (const uint32_t *)(data + nblocks * 4);
+  const uint32_t *blocks = reinterpret_cast<const uint32_t *>(data + nblocks * 4);
 
   for (int i = -nblocks; i; i++)
   {
@@ -103,21 +101,21 @@ static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *ou
   //----------
   // tail
 
-  const uint8_t *tail = (const uint8_t *)(data + nblocks * 4);
+  const uint8_t *tail = data + nblocks * 4;
 
   uint32_t k1 = 0;
 
   switch (len & 3)
   {
-  case 3: k1 ^= tail[2] << 16;
-  case 2: k1 ^= tail[1] << 8;
+  case 3: k1 ^= tail[2] << 16; [[fallthrough]];
+  case 2: k1 ^= tail[1] << 8; [[fallthrough]];
   case 1:
     k1 ^= tail[0];
     k1 *= c1;
     k1 = ROTL32(k1, 15);
     k1 *= c2;
     h1 ^= k1;
-  };
+  }
 
   //----------
   // finalization
@@ -126,7 +124,7 @@ static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *ou
 
   h1 = fmix32(h1);
 
-  *(uint32_t *)out = h1;
+  *static_cast<uint32_t *>(out) = h1;
 }
 
 //-----------------------------------------------------------------------------

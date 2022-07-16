@@ -117,7 +117,7 @@ namespace Internal
   constexpr auto serVal(OStrm &strm, const T &value) noexcept
     -> std::enable_if_t<std::is_arithmetic_v<T> || std::is_enum_v<T>>
   {
-    strm.write((char *)&value, sizeof(value));
+    strm.write(reinterpret_cast<const char *>(&value), sizeof(value));
   }
 
   auto serVal(OStrm &strm, const std::string &value) noexcept -> void;
@@ -125,7 +125,7 @@ namespace Internal
   template <typename T>
   constexpr auto serVal(OStrm &strm, const std::vector<T> &value) -> void
   {
-    int32_t sz = value.size();
+    const auto sz = static_cast<int32_t>(value.size());
     Ser{strm}("sz", sz);
     for (auto &&v : value)
       Ser{strm}("v", v);
@@ -186,7 +186,7 @@ namespace Internal
   constexpr auto deserVal(IStrm &strm, T &value) noexcept
     -> std::enable_if_t<std::is_arithmetic_v<T> || std::is_enum_v<T>>
   {
-    strm.read((char *)&value, sizeof(value));
+    strm.read(reinterpret_cast<char *>(&value), sizeof(value));
   }
 
   auto deserVal(IStrm &strm, std::string &value) noexcept -> void;
