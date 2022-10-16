@@ -18,13 +18,16 @@
   }
 
 #define SER_DEF_SUPER(className) \
+  enum { IsSerializableClass };  \
   template <typename Arch>       \
-  void super(Arch &arch) const   \
+  void ser(Arch &arch) const     \
   {                              \
     className::ser(arch);        \
+    SER_PROP_LIST                \
   }                              \
   template <typename Arch>       \
-  void super(Arch &arch)         \
+  void deser(Arch &arch)         \
   {                              \
     className::deser(arch);      \
+    SER_PROP_LIST                \
   }
