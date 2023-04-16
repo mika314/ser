@@ -152,7 +152,7 @@ namespace Internal
   template <typename T, typename U>
   constexpr auto serVal(OStrm &strm, const std::unordered_map<T, U> &value) -> void
   {
-    int32_t sz = value.size();
+    const auto sz = static_cast<int32_t>(value.size());
     Ser{strm}("sz", sz);
     for (auto &&v : value)
     {
