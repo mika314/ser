@@ -4,6 +4,7 @@
 #include "ostrm.hpp"
 
 #include <array>
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -32,6 +33,9 @@ namespace Internal
   constexpr auto serVal(OStrm &strm, const std::unordered_map<T, U> &value) -> void;
 
   template <typename T, typename U>
+  constexpr auto serVal(OStrm &strm, const std::map<T, U> &value) -> void;
+
+  template <typename T, typename U>
   constexpr auto serVal(OStrm &strm, const std::pair<T, U> &value) -> void;
 
   template <typename... T>
@@ -57,6 +61,9 @@ namespace Internal
 
   template <typename T, typename U>
   constexpr auto deserVal(IStrm &strm, std::unordered_map<T, U> &value) -> void;
+
+  template <typename T, typename U>
+  constexpr auto deserVal(IStrm &strm, std::map<T, U> &value) -> void;
 
   template <typename T, typename U>
   constexpr auto deserVal(IStrm &strm, std::pair<T, U> &value) -> void;
@@ -162,6 +169,18 @@ namespace Internal
   }
 
   template <typename T, typename U>
+  constexpr auto serVal(OStrm &strm, const std::map<T, U> &value) -> void
+  {
+    const auto sz = static_cast<int32_t>(value.size());
+    Ser{strm}("sz", sz);
+    for (auto &&v : value)
+    {
+      Ser{strm}("key", v.first);
+      Ser{strm}("val", v.second);
+    }
+  }
+
+  template <typename T, typename U>
   constexpr auto serVal(OStrm &strm, const std::pair<T, U> &value) -> void
   {
     Ser{strm}("first", value.first);
@@ -237,6 +256,22 @@ namespace Internal
 
   template <typename T, typename U>
   constexpr auto deserVal(IStrm &strm, std::unordered_map<T, U> &value) -> void
+  {
+    value.clear();
+    int32_t sz{};
+    Deser{strm}("sz", sz);
+    for (auto i = 0; i < sz; ++i)
+    {
+      T key;
+      Deser{strm}("key", key);
+      U val;
+      Deser{strm}("val", val);
+      value[key] = std::move(val);
+    }
+  }
+
+  template <typename T, typename U>
+  constexpr auto deserVal(IStrm &strm, std::map<T, U> &value) -> void
   {
     value.clear();
     int32_t sz{};
