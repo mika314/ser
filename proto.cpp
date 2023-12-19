@@ -128,7 +128,7 @@ static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *ou
 
 //-----------------------------------------------------------------------------
 
-#ifdef SER_AUTO_VERSION
+#ifndef SER_VERSION
 namespace Internal
 {
   auto calcMd5Hash(const char *data, const size_t size) -> uint32_t

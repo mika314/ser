@@ -1,5 +1,5 @@
 #pragma once
-#ifdef SER_AUTO_VERSION
+#ifndef SER_VERSION
 #include "is_serializable.hpp"
 #include "ostrm.hpp"
 #include <memory>

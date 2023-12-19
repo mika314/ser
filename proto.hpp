@@ -19,7 +19,7 @@ namespace Internal
     }();
   };
 
-#ifdef SER_AUTO_VERSION
+#ifndef SER_VERSION
   template <typename H, typename... T>
   struct SerAllDefCtord
   {
@@ -84,17 +84,18 @@ public:
 
   static auto version() -> uint32_t
   {
-#ifdef SER_AUTO_VERSION
+#ifndef SER_VERSION
     static uint32_t version = calcMd5Hash();
 #else
-    static uint32_t version = 1;
+    static uint32_t version = SER_VERSION;
 #endif
     return version;
   }
 
 private:
   template <typename Arg, typename Vis, typename... Tail>
-  static constexpr auto deserById(int32_t idx, IStrm &strm, Vis &&vis, int32_t msgId, Arg, Tail... tail) -> void
+  static constexpr auto deserById(int32_t idx, IStrm &strm, Vis &&vis, int32_t msgId, Arg, Tail... tail)
+    -> void
   {
     if (msgId != idx)
       return deserById(idx + 1, strm, std::move(vis), msgId, tail...);
@@ -109,7 +110,7 @@ private:
     throw std::runtime_error("Unknown msgId: " + std::to_string(msgId));
   }
 
-#ifdef SER_AUTO_VERSION
+#ifndef SER_VERSION
   static auto calcMd5Hash() -> uint32_t
   {
     OStrm strm;
