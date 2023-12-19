@@ -1,4 +1,5 @@
 #pragma once
+#ifdef SER_AUTO_VERSION
 #include "is_serializable.hpp"
 #include "ostrm.hpp"
 #include <memory>
@@ -123,3 +124,4 @@ constexpr auto schema(OStrm &strm, const T &value) -> void
   else
     s("value", value);
 }
+#endif

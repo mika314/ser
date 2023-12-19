@@ -43,7 +43,6 @@ inline uint64_t rotl64(uint64_t x, int8_t r)
 
 #define ROTL32(x, y) rotl32(x, y)
 
-
 #endif // !defined(_MSC_VER)
 
 //-----------------------------------------------------------------------------
@@ -129,6 +128,7 @@ static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *ou
 
 //-----------------------------------------------------------------------------
 
+#ifdef SER_AUTO_VERSION
 namespace Internal
 {
   auto calcMd5Hash(const char *data, const size_t size) -> uint32_t
@@ -138,3 +138,4 @@ namespace Internal
     return res;
   }
 } // namespace Internal
+#endif
