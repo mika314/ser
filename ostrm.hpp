@@ -4,16 +4,19 @@
 class OStrm
 {
 public:
-  OStrm() = default;
+  OStrm(char *beg, const char *const end) : beg(beg), p(beg), end(end) {}
   OStrm(const OStrm &) = delete;
   OStrm &operator=(const OStrm &) = delete;
   constexpr auto write(const char *b, size_t sz) noexcept -> void
   {
-    for (; sz > 0; --sz, ++b)
-      buff.push_back(*b);
+    for (; sz > 0 && p != end; --sz, ++b, ++p)
+      *p = *b;
   }
-  std::string &str() { return buff; }
+  constexpr auto size() const -> size_t { return p - beg; }
+  constexpr auto clear() -> void { p = beg; }
 
 private:
-  std::string buff;
+  char *beg;
+  char *p;
+  const char *const end;
 };

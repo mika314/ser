@@ -60,11 +60,11 @@ public:
   }
 
   template <typename Msg>
-  static auto ser(const Msg &msg) -> std::string
+  static auto ser(const Msg &msg, char *beg, const char *const end) -> size_t
   {
-    OStrm strm;
+    auto strm = OStrm{beg, end};
     ser(strm, msg);
-    return strm.str();
+    return strm.size();
   }
 
   template <typename Vis>
