@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <variant>
 #include <vector>
@@ -38,6 +39,9 @@ namespace Internal
   template <typename T, typename U>
   constexpr auto serVal(OStrm &strm, const std::pair<T, U> &value) -> void;
 
+  template <typename... Args>
+  constexpr auto serVal(OStrm &strm, const std::tuple<Args...> &value) -> void;
+
   template <typename... T>
   constexpr auto serVal(OStrm &strm, const std::variant<T...> &value) -> void;
 
@@ -67,6 +71,9 @@ namespace Internal
 
   template <typename T, typename U>
   constexpr auto deserVal(IStrm &strm, std::pair<T, U> &value) -> void;
+
+  template <typename... Args>
+  constexpr auto deserVal(IStrm &strm, std::tuple<Args...> &value) -> void;
 
   template <typename T, size_t N>
   constexpr auto deserVal(IStrm &strm, std::array<T, N> &value) -> void;
@@ -187,6 +194,12 @@ namespace Internal
     Ser{strm}("second", value.second);
   }
 
+  template <typename... Args>
+  constexpr auto serVal(OStrm &strm, const std::tuple<Args...> &value) -> void
+  {
+    std::apply([&strm](const auto &...args) { (..., (Ser{strm}("element", args))); }, value);
+  }
+
   template <typename T, size_t N>
   constexpr auto serVal(OStrm &strm, const std::array<T, N> &value) -> void
   {
@@ -291,6 +304,12 @@ namespace Internal
   {
     Deser{strm}("first", value.first);
     Deser{strm}("second", value.second);
+  }
+
+  template <typename... Args>
+  constexpr auto deserVal(IStrm &strm, std::tuple<Args...> &value) -> void
+  {
+    std::apply([&strm](auto &...args) { (..., (Deser{strm}("element", args))); }, value);
   }
 
   template <typename T, size_t N>
