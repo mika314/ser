@@ -113,9 +113,10 @@ private:
 #ifndef SER_VERSION
   static auto calcMd5Hash() -> uint32_t
   {
-    OStrm strm;
+    std::array<char, 64 * 1024> buf;
+    OStrm strm(buf.data(), buf.data() + buf.size());
     Internal::SerAllDefCtord<Args...>{}(strm);
-    return Internal::calcMd5Hash(strm.str().data(), strm.str().size());
+    return Internal::calcMd5Hash(buf.data(), strm.size());
   }
 #endif
 };
