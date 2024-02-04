@@ -32,11 +32,10 @@
   }
 
 // a better way to define structures
-#define SER_STRUCT(name)                            \
-  struct name                                       \
-  {                                                 \
-    static constexpr const char *className = #name; \
-    enum { IsSerializableClass };
+#define SER_STRUCT(name) \
+  struct name            \
+  {                      \
+    static constexpr const char *className = #name;
 
 #define SER_EXPAND(x) x
 #define SER_FOR_EACH_0(x) (void)arch;
@@ -73,6 +72,7 @@
 #define SER_CONCAT(a, b) SER_CONCAT_IMPL(a, b)
 
 #define SER_PROPS(...)                                       \
+  enum { IsSerializableClass };                              \
   void ser(auto &arch) const                                 \
   {                                                          \
     SER_FOR_EACH_N(SER_COUNT_ARGS(__VA_ARGS__), __VA_ARGS__) \
@@ -82,8 +82,9 @@
     SER_FOR_EACH_N(SER_COUNT_ARGS(__VA_ARGS__), __VA_ARGS__) \
   }
 
-#define SER_EMPTY_PROPS()   \
-  void ser(auto &) const {} \
+#define SER_EMPTY_PROPS()       \
+  enum { IsSerializableClass }; \
+  void ser(auto &) const {}     \
   void deser(auto &) {}
 
 #define SER_END }
