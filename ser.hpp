@@ -92,7 +92,7 @@ public:
   template <typename T>
   constexpr auto operator()(const char *, const T &value) -> void
   {
-    if constexpr (Internal::IsSerializableClassV<T>)
+    if constexpr (IsSerializableClassV<T>)
     {
       Ser s(strm);
       value.ser(s);
@@ -112,7 +112,7 @@ public:
   template <typename T>
   constexpr auto operator()(const char *, T &value) -> void
   {
-    if constexpr (Internal::IsSerializableClassV<T>)
+    if constexpr (IsSerializableClassV<T>)
     {
       Deser s(strm);
       value.deser(s);
@@ -349,7 +349,7 @@ template <typename T>
 constexpr auto ser(OStrm &strm, const T &value) -> void
 {
   Ser s(strm);
-  if constexpr (Internal::IsSerializableClassV<T>)
+  if constexpr (IsSerializableClassV<T>)
     value.ser(s);
   else
     s("value", value);
@@ -359,7 +359,7 @@ template <typename T>
 constexpr auto deser(IStrm &strm, T &value) -> void
 {
   Deser s(strm);
-  if constexpr (Internal::IsSerializableClassV<T>)
+  if constexpr (IsSerializableClassV<T>)
     value.deser(s);
   else
     s("value", value);

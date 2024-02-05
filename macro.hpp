@@ -62,9 +62,37 @@
   arch(#x, x);                 \
   SER_EXPAND(SER_FOR_EACH_7(__VA_ARGS__))
 
-#define SER_COUNT_ARGS_IMPL(x, _1, _2, _3, _4, _5, _6, _7, _8, N, ...) N
+#define SER_FOR_EACH_9(x, ...) \
+  arch(#x, x);                 \
+  SER_EXPAND(SER_FOR_EACH_8(__VA_ARGS__))
+#define SER_FOR_EACH_10(x, ...) \
+  arch(#x, x);                  \
+  SER_EXPAND(SER_FOR_EACH_9(__VA_ARGS__))
+#define SER_FOR_EACH_11(x, ...) \
+  arch(#x, x);                  \
+  SER_EXPAND(SER_FOR_EACH_10(__VA_ARGS__))
+#define SER_FOR_EACH_12(x, ...) \
+  arch(#x, x);                  \
+  SER_EXPAND(SER_FOR_EACH_11(__VA_ARGS__))
+#define SER_FOR_EACH_13(x, ...) \
+  arch(#x, x);                  \
+  SER_EXPAND(SER_FOR_EACH_12(__VA_ARGS__))
+#define SER_FOR_EACH_14(x, ...) \
+  arch(#x, x);                  \
+  SER_EXPAND(SER_FOR_EACH_13(__VA_ARGS__))
+#define SER_FOR_EACH_15(x, ...) \
+  arch(#x, x);                  \
+  SER_EXPAND(SER_FOR_EACH_14(__VA_ARGS__))
+#define SER_FOR_EACH_16(x, ...) \
+  arch(#x, x);                  \
+  SER_EXPAND(SER_FOR_EACH_15(__VA_ARGS__))
+
+#define SER_COUNT_ARGS_IMPL(                                                        \
+  x, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, N, ...) \
+  N
 #define SER_COUNT_ARGS_HELPER(...) \
-  SER_EXPAND(SER_COUNT_ARGS_IMPL(0, ##__VA_ARGS__, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+  SER_EXPAND(                      \
+    SER_COUNT_ARGS_IMPL(0, ##__VA_ARGS__, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
 #define SER_COUNT_ARGS(...) SER_COUNT_ARGS_HELPER(__VA_ARGS__)
 
 #define SER_FOR_EACH_N(N, ...) SER_EXPAND(SER_CONCAT(SER_FOR_EACH_, N)(__VA_ARGS__))

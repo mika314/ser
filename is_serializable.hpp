@@ -18,7 +18,7 @@ namespace Internal
     using Type = decltype(test<T>(nullptr));
     static const bool value = std::is_same_v<std::true_type, Type>;
   };
-
-  template <typename T>
-  inline constexpr bool IsSerializableClassV = IsSerializableClass<T>::value;
 } // namespace Internal
+
+template <typename T>
+inline constexpr bool IsSerializableClassV = Internal::IsSerializableClass<T>::value;
