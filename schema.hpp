@@ -16,7 +16,7 @@ namespace Internal
     template <typename T>
     constexpr auto operator()(const char *name, const T &value) -> void
     {
-      if constexpr (Internal::IsSerializableClassV<T>)
+      if constexpr (IsSerializableClassV<T>)
       {
         strm.write(name, strlen(name));
         strm.write(":", 1);
@@ -35,7 +35,7 @@ namespace Internal
     template <typename T>
     constexpr auto operator()(const char *name, const std::vector<T> &) -> void
     {
-      if constexpr (Internal::IsSerializableClassV<T>)
+      if constexpr (IsSerializableClassV<T>)
       {
         strm.write(name, strlen(name));
         strm.write(":", 1);
@@ -89,7 +89,7 @@ namespace Internal
     template <typename T>
     constexpr auto operator()(const char *name, const std::unique_ptr<T> &) -> void
     {
-      if constexpr (Internal::IsSerializableClassV<T>)
+      if constexpr (IsSerializableClassV<T>)
       {
         strm.write(name, strlen(name));
         strm.write(":", 1);
@@ -115,7 +115,7 @@ template <typename T>
 constexpr auto schema(OStrm &strm, const T &value) -> void
 {
   Internal::Schema s(strm);
-  if constexpr (Internal::IsSerializableClassV<T>)
+  if constexpr (IsSerializableClassV<T>)
   {
     strm.write("value:{\n", strlen("value:{\n"));
     value.ser(s);

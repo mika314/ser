@@ -105,7 +105,7 @@ private:
   }
 
   template <typename Vis>
-  static constexpr auto deserById(int32_t, IStrm &, Vis &&, int32_t msgId) -> void
+  static constexpr auto deserById(int32_t, IStrm &, Vis &&, int32_t /*msgId*/) -> void
   {
     // throw std::runtime_error("Unknown msgId: " + std::to_string(msgId));
   }
