@@ -88,7 +88,7 @@ namespace Internal
 class Ser
 {
 public:
-  constexpr Ser(OStrm &strm) : strm(strm) {}
+  constexpr Ser(OStrm &aStrm) : strm(aStrm) {}
   template <typename T>
   constexpr auto operator()(const char *, const T &value) -> void
   {
@@ -108,7 +108,7 @@ private:
 class Deser
 {
 public:
-  constexpr Deser(IStrm &strm) : strm(strm) {}
+  constexpr Deser(IStrm &aStrm) : strm(aStrm) {}
   template <typename T>
   constexpr auto operator()(const char *, T &value) -> void
   {

@@ -11,7 +11,7 @@ namespace Internal
   class Schema
   {
   public:
-    constexpr Schema(OStrm &strm) : strm(strm) {}
+    constexpr Schema(OStrm &aStrm) : strm(aStrm) {}
 
     template <typename T>
     constexpr auto operator()(const char *name, const T &value) -> void

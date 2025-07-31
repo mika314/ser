@@ -4,7 +4,7 @@
 class OStrm
 {
 public:
-  OStrm(char *beg, const char *const end) : beg(beg), p(beg), end(end) {}
+  OStrm(char *aBeg, const char *const aEnd) : beg(aBeg), p(aBeg), end(aEnd) {}
   OStrm(const OStrm &) = delete;
   OStrm &operator=(const OStrm &) = delete;
   constexpr auto write(const char *b, size_t sz) noexcept -> void
@@ -12,7 +12,7 @@ public:
     for (; sz > 0 && p != end; --sz, ++b, ++p)
       *p = *b;
   }
-  constexpr auto size() const -> size_t { return p - beg; }
+  constexpr auto size() const -> size_t { return static_cast<size_t>(p - beg); }
   constexpr auto clear() -> void { p = beg; }
 
 private:

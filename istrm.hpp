@@ -6,7 +6,7 @@
 class IStrm
 {
 public:
-  constexpr IStrm(const char *b, const char *e) noexcept : b(b), e(e) {}
+  constexpr IStrm(const char *aB, const char *aE) noexcept : b(aB), e(aE) {}
   constexpr auto read(char *buff, const std::size_t sz) noexcept -> size_t
   {
     auto cnt = sz;

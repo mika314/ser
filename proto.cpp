@@ -106,8 +106,8 @@ static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *ou
 
   switch (len & 3)
   {
-  case 3: k1 ^= tail[2] << 16; [[fallthrough]];
-  case 2: k1 ^= tail[1] << 8; [[fallthrough]];
+  case 3: k1 ^= static_cast<uint32_t>(tail[2]) << 16; [[fallthrough]];
+  case 2: k1 ^= static_cast<uint32_t>(tail[1]) << 8; [[fallthrough]];
   case 1:
     k1 ^= tail[0];
     k1 *= c1;
@@ -119,7 +119,7 @@ static void MurmurHash3_x86_32(const void *key, int len, uint32_t seed, void *ou
   //----------
   // finalization
 
-  h1 ^= len;
+  h1 ^= static_cast<uint32_t>(len);
 
   h1 = fmix32(h1);
 
